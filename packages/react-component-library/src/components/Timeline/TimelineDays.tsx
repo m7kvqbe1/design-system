@@ -1,49 +1,34 @@
 import React from 'react'
-import { format, isAfter } from 'date-fns'
 import classNames from 'classnames'
 
-import { withKey } from '../../helpers'
 import { TimelineContext } from './context'
-import { DATE_DAY_FORMAT } from './constants'
+import { TimelineDay } from './TimelineDay'
+import { TimelineHeaderRow } from './TimelineHeaderRow'
 
 export interface TimelineDaysWithRenderContentProps {
+  hasSide?: boolean
   render: (index: number, dayWidth: number, date: Date) => React.ReactElement
+  scrollY?: number
 }
 
 export interface TimelineDaysWithChildrenProps {
+  hasSide?: boolean
   render?: never
+  scrollY?: number
 }
 
 export type TimelineDaysProps =
   | TimelineDaysWithRenderContentProps
   | TimelineDaysWithChildrenProps
 
-function renderDefault(index: number, dayWidth: number, date: Date) {
-  const wrapperClasses = classNames(
-    'timeline__day',
-    'timeline__day--renderDefault'
-  )
+export const TimelineDays: React.FC<TimelineDaysProps> = ({
+  hasSide,
+  render,
+  scrollY,
+}) => {
+  // todo: warn hasSide
+  // todo: warn scrollY
 
-  const titleClasses = classNames(
-    'timeline__day-title',
-    'timeline__day-title--renderDefault'
-  )
-
-  return (
-    <div
-      className={wrapperClasses}
-      style={{
-        width: `${dayWidth}px`,
-      }}
-    >
-      <span className={titleClasses} data-testid="timeline-day-title">
-        {format(date, DATE_DAY_FORMAT)}
-      </span>
-    </div>
-  )
-}
-
-export const TimelineDays: React.FC<TimelineDaysProps> = ({ render }) => {
   const classes = classNames('timeline__days', {
     'timeline__days--renderDefault': !render,
   })
@@ -57,18 +42,25 @@ export const TimelineDays: React.FC<TimelineDaysProps> = ({ render }) => {
           options: { dayWidth },
         },
       }) => (
-        <div className={classes} data-testid="timeline-days">
-          {days &&
-            days.map(({ date }, index) => {
-              if (isAfter(date, timelineEndDate)) return null
-
-              const child = render
-                ? render(index, dayWidth, date)
-                : renderDefault(index, dayWidth, date)
-
-              return withKey(child, 'timeline-day', date.toString())
-            })}
-        </div>
+        <TimelineHeaderRow
+          hasSide={hasSide}
+          scrollY={scrollY}
+          style={{ height: '2.5rem', backgroundColor: 'lightcyan' }}
+          title="Days"
+        >
+          <div className={classes} data-testid="timeline-days">
+            {days &&
+              days.map(({ date }, index) => (
+                <TimelineDay
+                  date={date}
+                  dayWidth={dayWidth}
+                  index={index}
+                  render={render}
+                  timelineEndDate={timelineEndDate}
+                />
+              ))}
+          </div>
+        </TimelineHeaderRow>
       )}
     </TimelineContext.Consumer>
   )

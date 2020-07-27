@@ -2,26 +2,25 @@ import React from 'react'
 
 import { TimelineProvider } from './context'
 import { TimelineComponent } from './types'
+import { useTimelineScroll } from './hooks/useTimelineScroll'
 
 import {
-  TimelineSide,
   TimelineDays,
-  TimelineWeeks,
+  TimelineDaysProps,
   TimelineMonths,
-  TimelineTodayMarker,
-  TimelineRowProps,
+  TimelineMonthsProps,
   TimelineRows,
   TimelineRowsProps,
-  TimelineTodayMarkerProps,
-  TimelineMonthsProps,
-  TimelineWeeksProps,
-  TimelineDaysProps,
+  TimelineSide,
   TimelineSideProps,
+  TimelineTodayMarker,
+  TimelineTodayMarkerProps,
+  TimelineWeeks,
+  TimelineWeeksProps,
 } from '.'
 
 import { TimelineOptions } from './context/types'
 import { DEFAULTS } from './constants'
-import { getKey } from '../../helpers'
 
 type timelineRootChildrenType = React.ReactElement<TimelineSideProps>
 
@@ -41,6 +40,7 @@ type timelineChildrenType =
 export interface TimelineProps extends ComponentWithClass {
   children: timelineChildrenType | timelineChildrenType[]
   dayWidth?: number
+  hasSide?: boolean
   startDate?: Date
   endDate?: Date
   today?: Date
@@ -66,25 +66,17 @@ function extractChildren(
   })
 }
 
-function extractRowData(
-  rowGroups: timelineBodyChildrenType | timelineBodyChildrenType[]
+function mapChildren(
+  children: React.ReactElement | React.ReactElement[],
+  hasSide: boolean,
+  scrollY: number
 ) {
-  return (rowGroups as []).map(
-    ({ props: { children } }: timelineBodyChildrenType) => {
-      const rows =
-        React.Children.map(
-          children,
-          ({ props: { name } }: React.ReactElement<TimelineRowProps>) => ({
-            name,
-          })
-        ) || []
-
-      return {
-        // ref, // Create refs to original components? Drag + Drop etc?
-        rows,
-      }
-    }
-  )
+  return React.Children.map(children, (child) => {
+    return React.cloneElement(child, {
+      hasSide,
+      scrollY,
+    })
+  })
 }
 
 export const Timeline: React.FC<TimelineProps> = ({
@@ -100,7 +92,9 @@ export const Timeline: React.FC<TimelineProps> = ({
     rangeInMonths: range || DEFAULTS.RANGE_IN_MONTHS,
   }
 
-  const bodyChildren = extractChildren(children, [TimelineRows.name])
+  const { scrollY } = useTimelineScroll()
+
+  const sideChildren = extractChildren(children, [TimelineSide.name])
 
   const headChildren = extractChildren(children, [
     TimelineDays.name,
@@ -109,27 +103,7 @@ export const Timeline: React.FC<TimelineProps> = ({
     TimelineTodayMarker.name,
   ])
 
-  const rootChildren = extractChildren(
-    children,
-    [
-      TimelineRows.name,
-      TimelineDays.name,
-      TimelineWeeks.name,
-      TimelineMonths.name,
-      TimelineTodayMarker.name,
-    ],
-    true
-  ).map((child, index) => {
-    if (isComponentOf(child, [TimelineSide.name])) {
-      return React.cloneElement(child, {
-        rowGroups: extractRowData(bodyChildren),
-        headChildren,
-        key: getKey('root-component', index),
-      })
-    }
-
-    return child
-  })
+  const bodyChildren = extractChildren(children, [TimelineRows.name])
 
   return (
     <TimelineProvider
@@ -138,13 +112,21 @@ export const Timeline: React.FC<TimelineProps> = ({
       today={today}
       options={options}
     >
-      <article className="timeline">
-        {rootChildren}
-        <div className="timeline__inner" data-testid="timeline-inner">
-          <header className="timeline__header">{headChildren}</header>
-          {bodyChildren}
-        </div>
-      </article>
+      <div className="timeline" style={{ display: 'block' }} role="grid">
+        {mapChildren(headChildren, sideChildren.length > 0, scrollY)}
+        {React.Children.map(
+          bodyChildren,
+          (bodyChild: React.ReactElement<TimelineRowsProps>) => {
+            return React.cloneElement(bodyChild, {
+              children: mapChildren(
+                bodyChild.props.children,
+                sideChildren.length > 0,
+                scrollY
+              ),
+            })
+          }
+        )}
+      </div>
     </TimelineProvider>
   )
 }
