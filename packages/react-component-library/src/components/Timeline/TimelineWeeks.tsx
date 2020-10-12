@@ -41,27 +41,33 @@ export const TimelineWeeks: React.FC<TimelineWeeksProps> = ({ render }) => {
           weeks,
           options: { dayWidth },
         },
-      }) => (
-        <TimelineHeaderRow
-          className="timeline__weeks"
-          isShort
-          name="Weeks"
-          data-testid="timeline-weeks"
-        >
-          <StyledTimelineWeeks>
-            {weeks.map(({ startDate }, index) => (
-              <TimelineWeek
-                days={days}
-                dayWidth={dayWidth}
-                index={index}
-                key={getKey('timeline-week', startDate.toString())}
-                render={render}
-                startDate={startDate}
-              />
-            ))}
-          </StyledTimelineWeeks>
-        </TimelineHeaderRow>
-      )}
+      }) => {
+        if (dayWidth < 10) {
+          return null
+        }
+
+        return (
+          <TimelineHeaderRow
+            className="timeline__weeks"
+            isShort
+            name="Weeks"
+            data-testid="timeline-weeks"
+          >
+            <StyledTimelineWeeks>
+              {weeks.map(({ startDate }, index) => (
+                <TimelineWeek
+                  days={days}
+                  dayWidth={dayWidth}
+                  index={index}
+                  key={getKey('timeline-week', startDate.toString())}
+                  render={render}
+                  startDate={startDate}
+                />
+              ))}
+            </StyledTimelineWeeks>
+          </TimelineHeaderRow>
+        )
+      }}
     </TimelineContext.Consumer>
   )
 }

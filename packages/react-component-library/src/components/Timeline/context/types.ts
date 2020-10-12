@@ -1,10 +1,11 @@
 import { Dispatch } from 'react'
 
 export type TimelineOptions = {
-  dayWidth: number,
-  hoursBlockSize: number,
+  dayWidth: number
+  hoursBlockSize: number
   rangeInMonths: number
   unitWidth: number
+  scaleIndex: number
 }
 
 export type TimelineDay = {
@@ -41,11 +42,17 @@ export type TimelineState = {
 export const TIMELINE_ACTIONS = {
   GET_NEXT: 'GET_NEXT',
   GET_PREV: 'GET_PREV',
+  SCALE: 'SCALE',
+  ZOOM_IN: 'ZOOM_IN',
+  ZOOM_OUT: 'ZOOM_OUT',
 } as const
 
 export type TimelineAction =
   | { type: typeof TIMELINE_ACTIONS.GET_NEXT }
   | { type: typeof TIMELINE_ACTIONS.GET_PREV }
+  | { type: typeof TIMELINE_ACTIONS.SCALE, scaleIndex: number }
+  | { type: typeof TIMELINE_ACTIONS.ZOOM_IN }
+  | { type: typeof TIMELINE_ACTIONS.ZOOM_OUT }
 
 export interface TimelineContextDefault {
   hasSide: boolean

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { selectors } from '@royalnavy/design-tokens'
+import { findIndex } from 'lodash'
 
 import { ComponentWithClass } from '../../common/ComponentWithClass'
 import { TimelineProvider } from './context'
@@ -27,7 +28,9 @@ import {
   DEFAULTS,
   TIMELINE_BORDER_COLOR,
   TIMELINE_ROW_HEADER_WIDTH,
+  TIMELINE_SCALES,
 } from './constants'
+import { TimelineScaling } from './TimelineScaling'
 
 type timelineRootChildrenType = React.ReactElement<TimelineSideProps>
 
@@ -140,12 +143,15 @@ export const Timeline: React.FC<TimelineProps> = ({
   range,
   unitWidth,
 }) => {
-  const hoursBlockSize = getHoursBlockSize(children)
+  const scaleIndex = findIndex(TIMELINE_SCALES, 'default')
+  const hoursBlockSize = TIMELINE_SCALES[scaleIndex].hoursBlockSize
+  // const hoursBlockSize = getHoursBlockSize(children)
   const options: TimelineOptions = {
     hoursBlockSize,
     dayWidth: getDayWidth(hoursBlockSize, dayWidth, unitWidth),
     unitWidth: unitWidth || DEFAULTS.UNIT_WIDTH,
     rangeInMonths: range || DEFAULTS.RANGE_IN_MONTHS,
+    scaleIndex: findIndex(TIMELINE_SCALES, 'default')
   }
 
   const rootChildren = extractChildren(
@@ -182,6 +188,7 @@ export const Timeline: React.FC<TimelineProps> = ({
       startDate={startDate}
       today={today}
     >
+      <TimelineScaling />
       <StyledTimeline className="timeline" data-testid="timeline" role="grid">
         <StyledInner
           className="timeline__inner"

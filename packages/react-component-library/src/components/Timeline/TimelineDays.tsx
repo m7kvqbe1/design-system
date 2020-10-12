@@ -31,27 +31,33 @@ export const TimelineDays: React.FC<TimelineDaysProps> = ({ render }) => {
           endDate: timelineEndDate,
           options: { dayWidth },
         },
-      }) => (
-        <TimelineHeaderRow
-          className="timeline__days"
-          isShort
-          name="Days"
-          data-testid="timeline-days"
-        >
-          <StyledTimelineDays>
-            {days.map(({ date }, index) => (
-              <TimelineDay
-                date={date}
-                dayWidth={dayWidth}
-                index={index}
-                key={getKey('timeline-day', date.toString())}
-                render={render}
-                timelineEndDate={timelineEndDate}
-              />
-            ))}
-          </StyledTimelineDays>
-        </TimelineHeaderRow>
-      )}
+      }) => {
+        if (dayWidth < 30) {
+          return null
+        }
+
+        return (
+          <TimelineHeaderRow
+            className="timeline__days"
+            isShort
+            name="Days"
+            data-testid="timeline-days"
+          >
+            <StyledTimelineDays>
+              {days.map(({ date }, index) => (
+                <TimelineDay
+                  date={date}
+                  dayWidth={dayWidth}
+                  index={index}
+                  key={getKey('timeline-day', date.toString())}
+                  render={render}
+                  timelineEndDate={timelineEndDate}
+                />
+              ))}
+            </StyledTimelineDays>
+          </TimelineHeaderRow>
+        )
+      }}
     </TimelineContext.Consumer>
   )
 }

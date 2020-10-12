@@ -28,6 +28,55 @@ const TIMELINE_BG_COLOR = color('neutral', '000')
 const TIMELINE_ALT_BG_COLOR = color('neutral', 'white')
 const TIMELINE_ROW_HEADER_WIDTH = '16rem'
 
+const TIMELINE_SCALES = [
+  {
+    hoursBlockSize: null,
+    dayWidth: 5,
+    unitWidth: 5,
+  },
+  {
+    hoursBlockSize: null,
+    dayWidth: 10,
+    unitWidth: 10,
+  },
+  {
+    hoursBlockSize: null,
+    dayWidth: 20,
+    unitWidth: 20,
+  },
+  {
+    hoursBlockSize: 24,
+    dayWidth: 30,
+    unitWidth: 30,
+  },
+  {
+    hoursBlockSize: 12,
+    dayWidth: 60,
+    unitWidth: 30,
+  },
+  {
+    default: true,
+    hoursBlockSize: 6,
+    dayWidth: 120,
+    unitWidth: 30,
+  },
+  {
+    hoursBlockSize: 4,
+    dayWidth: 180,
+    unitWidth: 30,
+  },
+  {
+    hoursBlockSize: 2,
+    dayWidth: 360,
+    unitWidth: 30,
+  },
+  {
+    hoursBlockSize: 1,
+    dayWidth: 720,
+    unitWidth: 30,
+  },
+]
+
 export {
   ACCESSIBLE_DATE_FORMAT,
   DATE_DAY_FORMAT,
@@ -40,5 +89,6 @@ export {
   TIMELINE_BORDER_COLOR,
   TIMELINE_BG_COLOR,
   TIMELINE_ALT_BG_COLOR,
-  TIMELINE_ROW_HEADER_WIDTH
+  TIMELINE_ROW_HEADER_WIDTH,
+  TIMELINE_SCALES,
 }

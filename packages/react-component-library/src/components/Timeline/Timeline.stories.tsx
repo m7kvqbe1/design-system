@@ -1,7 +1,11 @@
 import React from 'react'
 import { format } from 'date-fns'
 import { Meta } from '@storybook/react/types-6-0'
-import { ColorDanger500 } from '@royalnavy/design-tokens'
+import {
+  ColorDanger500,
+  ColorWarning500,
+  ColorAction500,
+} from '@royalnavy/design-tokens'
 
 import {
   Timeline,
@@ -192,8 +196,11 @@ export const WithCustomMonths = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths render={CustomTimelineMonth} />
       <TimelineWeeks />
@@ -234,8 +241,11 @@ export const WithCustomWeeks = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks render={CustomTimelineWeek} />
@@ -264,8 +274,11 @@ export const WithCustomDays = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -294,8 +307,11 @@ export const WithCustomHours = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -330,8 +346,11 @@ export const WithCustomTodayMarker = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker render={CustomTodayMarker} />
       <TimelineMonths />
       <TimelineWeeks />
@@ -363,8 +382,11 @@ export const WithCustomColumns = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -398,8 +420,11 @@ WithCustomColumns.storyName = 'With custom columns'
 
 export const WithCustomEventBarColor = () => {
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -456,8 +481,11 @@ export const WithCustomEventContent = () => {
   }
 
   return (
-    <Timeline startDate={new Date(2020, 3, 1)} today={new Date(2020, 3, 15)}>
-      <TimelineSide />
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+    >
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -534,11 +562,11 @@ WithCustomEventContent.storyName = 'With custom event content'
 export const WithCustomDayWidth = () => {
   return (
     <Timeline
+      hasSide
       startDate={new Date(2020, 3, 1)}
       today={new Date(2020, 3, 15)}
       unitWidth={75}
     >
-      <TimelineSide />
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -573,11 +601,11 @@ WithCustomDayWidth.storyName = 'With custom day width'
 export const WithCustomRange = () => {
   return (
     <Timeline
+      hasSide
       startDate={new Date(2020, 3, 1)}
       today={new Date(2020, 3, 15)}
       range={6}
     >
-      <TimelineSide />
       <TimelineTodayMarker />
       <TimelineMonths />
       <TimelineWeeks />
@@ -608,3 +636,119 @@ export const WithCustomRange = () => {
   )
 }
 WithCustomRange.storyName = 'With custom range'
+
+export const Spike = () => {
+  return (
+    <Timeline
+      hasSide
+      startDate={new Date(2020, 3, 1)}
+      today={new Date(2020, 3, 15)}
+      range={6}
+    >
+      <TimelineTodayMarker />
+      <TimelineMonths />
+      <TimelineWeeks />
+      <TimelineDays />
+      <TimelineHours />
+      <TimelineRows>
+        <TimelineRow name="Row 1">
+          <TimelineEvents>
+            <TimelineEvent
+              startDate={new Date(2020, 3, 3)}
+              endDate={new Date(2020, 3, 4)}
+            >
+              Event 1
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+        <TimelineRow name="Row 2">
+          <TimelineEvents>
+            <TimelineEvent
+              startDate={new Date(2020, 3, 4)}
+              endDate={new Date(2020, 3, 10)}
+            >
+              Event 2
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+        <TimelineRow name="Row 3">
+          <TimelineEvents>
+            <TimelineEvent
+              startDate={new Date(2020, 3, 2)}
+              endDate={new Date(2020, 3, 5)}
+            >
+              Event 3
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+        <TimelineRow name="Row 4">
+          <TimelineEvents>
+            <TimelineEvent
+              startDate={new Date(2020, 3, 1)}
+              endDate={new Date(2020, 3, 10)}
+            >
+              Event 4
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+        <TimelineRow name="Row 5">
+          <TimelineEvents>
+            <TimelineEvent
+              startDate={new Date(2020, 3, 3)}
+              endDate={new Date(2020, 3, 5)}
+            >
+              Event 5
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+        <TimelineRow name="Row 6">
+          <TimelineEvents>
+            <TimelineEvent
+              barColor={ColorDanger500}
+              startDate={new Date(2020, 3, 3)}
+              endDate={new Date(2020, 3, 5)}
+            >
+              Event 6
+            </TimelineEvent>
+            <TimelineEvent
+              barColor={ColorAction500}
+              startDate={new Date(2020, 3, 6)}
+              endDate={new Date(2020, 3, 8)}
+            >
+              Event 7
+            </TimelineEvent>
+            <TimelineEvent
+              barColor={ColorAction500}
+              startDate={new Date(2020, 3, 13)}
+              endDate={new Date(2020, 3, 15)}
+            >
+              Event 8
+            </TimelineEvent>
+            <TimelineEvent
+              barColor={ColorAction500}
+              startDate={new Date(2020, 3, 20)}
+              endDate={new Date(2020, 3, 22)}
+            >
+              Event 9
+            </TimelineEvent>
+            <TimelineEvent
+              barColor={ColorAction500}
+              startDate={new Date(2020, 3, 27)}
+              endDate={new Date(2020, 3, 29)}
+            >
+              Event 10
+            </TimelineEvent>
+            <TimelineEvent
+              barColor={ColorAction500}
+              startDate={new Date(2020, 4, 3)}
+              endDate={new Date(2020, 4, 5)}
+            >
+              Event 11
+            </TimelineEvent>
+          </TimelineEvents>
+        </TimelineRow>
+      </TimelineRows>
+    </Timeline>
+  )
+}
+Spike.storyName = 'Spike'

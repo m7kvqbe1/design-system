@@ -18,19 +18,17 @@ import {
   TimelineHour,
 } from './types'
 
-import { WEEK_START } from '../constants'
+import { TIMELINE_SCALES, WEEK_START } from '../constants'
 
 const HOURS_IN_DAY = 24
 
 export function getMonths(start: Date, end: Date): TimelineMonth[] {
-  const months = eachMonthOfInterval({ start, end }).map(
-    (date) => {
-      return {
-        monthIndex: date.getMonth(),
-        startDate: date,
-      }
+  const months = eachMonthOfInterval({ start, end }).map((date) => {
+    return {
+      monthIndex: date.getMonth(),
+      startDate: date,
     }
-  )
+  })
 
   return months
 }
@@ -50,21 +48,19 @@ export function getWeeks(start: Date, end: Date): TimelineWeek[] {
 }
 
 export function getDays(start: Date, end: Date): TimelineDay[] {
-  const days = eachDayOfInterval({ start, end }).map(
-    (date) => {
-      return {
-        dayIndex: date.getDate() - 1,
-        date,
-      }
+  const days = eachDayOfInterval({ start, end }).map((date) => {
+    return {
+      dayIndex: date.getDate() - 1,
+      date,
     }
-  )
+  })
 
   return days
 }
 
 export function getHours(blockSize: number): TimelineHour[] {
   if (!blockSize) {
-    return []
+    return null
   }
 
   const numberOfBlocks = HOURS_IN_DAY / blockSize
@@ -129,6 +125,48 @@ export function reducer(
           endOfMonth(subMonths(lastMonthOfRange, range)),
           hoursBlockSize
         ),
+      }
+    case TIMELINE_ACTIONS.SCALE:
+      return {
+        ...state,
+        ...buildCalendar(
+          firstMonthOfRange,
+          lastMonthOfRange,
+          TIMELINE_SCALES[action.scaleIndex].hoursBlockSize
+        ),
+        options: {
+          ...state.options,
+          ...TIMELINE_SCALES[action.scaleIndex],
+          scaleIndex: action.scaleIndex,
+        },
+      }
+    case TIMELINE_ACTIONS.ZOOM_IN:
+      return {
+        ...state,
+        ...buildCalendar(
+          firstMonthOfRange,
+          lastMonthOfRange,
+          TIMELINE_SCALES[state.options.scaleIndex + 1].hoursBlockSize
+        ),
+        options: {
+          ...state.options,
+          ...TIMELINE_SCALES[state.options.scaleIndex + 1],
+          scaleIndex: state.options.scaleIndex + 1,
+        },
+      }
+    case TIMELINE_ACTIONS.ZOOM_OUT:
+      return {
+        ...state,
+        ...buildCalendar(
+          firstMonthOfRange,
+          lastMonthOfRange,
+          TIMELINE_SCALES[state.options.scaleIndex - 1].hoursBlockSize
+        ),
+        options: {
+          ...state.options,
+          ...TIMELINE_SCALES[state.options.scaleIndex - 1],
+          scaleIndex: state.options.scaleIndex - 1,
+        },
       }
     default:
       throw new Error('Unknown reducer action')

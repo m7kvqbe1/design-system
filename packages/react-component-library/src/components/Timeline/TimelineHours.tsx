@@ -39,32 +39,38 @@ export const TimelineHours: React.FC<TimelineHoursProps> = ({ render }) => {
           endDate: timelineEndDate,
           options: { unitWidth },
         },
-      }) => (
-        <TimelineHeaderRow
-          className="timeline__hours"
-          isShort
-          name="Hours"
-          data-testid="timeline-hours"
-        >
-          <StyledTimelineHours>
-            {days.map(({ date }) => {
-              return hours.map(({ hourIndex, time }) => (
-                <TimelineHour
-                  date={date}
-                  key={getKey(
-                    'timeline-hour',
-                    `${date.toString()}-${hourIndex}`
-                  )}
-                  render={render}
-                  time={time}
-                  timelineEndDate={timelineEndDate}
-                  width={unitWidth}
-                />
-              ))
-            })}
-          </StyledTimelineHours>
-        </TimelineHeaderRow>
-      )}
+      }) => {
+        if (!hours || hours.length === 1) {
+          return null
+        }
+
+        return (
+          <TimelineHeaderRow
+            className="timeline__hours"
+            isShort
+            name="Hours"
+            data-testid="timeline-hours"
+          >
+            <StyledTimelineHours>
+              {days.map(({ date }) => {
+                return hours.map(({ hourIndex, time }) => (
+                  <TimelineHour
+                    date={date}
+                    key={getKey(
+                      'timeline-hour',
+                      `${date.toString()}-${hourIndex}`
+                    )}
+                    render={render}
+                    time={time}
+                    timelineEndDate={timelineEndDate}
+                    width={unitWidth}
+                  />
+                ))
+              })}
+            </StyledTimelineHours>
+          </TimelineHeaderRow>
+        )
+      }}
     </TimelineContext.Consumer>
   )
 }
