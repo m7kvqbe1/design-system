@@ -14,8 +14,9 @@ interface StyledTextProps {
 
 const { color, fontSize, spacing } = selectors
 
-const StyledContextMenuItem = styled.li`
+export const StyledContextMenuItem = styled.li`
   border-radius: 2px;
+
   > * {
     text-overflow: ellipsis;
     display: flex;
@@ -32,7 +33,7 @@ const StyledContextMenuItem = styled.li`
   }
 `
 
-const StyledIcon = styled.div`
+export const StyledIcon = styled.div`
   display: inline-flex;
   align-items: center;
   margin-right: ${spacing('2')};
@@ -42,7 +43,7 @@ const StyledIcon = styled.div`
   }
 `
 
-const StyledText = styled.div<StyledTextProps>`
+export const StyledText = styled.div<StyledTextProps>`
   color: ${color('neutral', '400')};
   font-weight: 600;
   font-size: ${fontSize('base')};
