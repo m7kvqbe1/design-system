@@ -3,7 +3,8 @@ name: Release
 # on:
 #   schedule:
 #     - cron: '0 4 * * 1-5'
-on: [workflow_dispatch]
+on:
+  push:
 
 jobs:
   release:
